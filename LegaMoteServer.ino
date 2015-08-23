@@ -37,7 +37,17 @@
  * you can chose any relay finding scheme you like 
  * by implemeting your own getRelayPinFromId() function.
  */
-int RELAY_PIN_BASE_NUM = 3;
+int RELAY_PIN_BASE_NUM = 6;
+int RELAY_PINS_MAX_COUNT = 2;
+
+/*
+ * Pin to Power the Relay Module.
+ * Since the BT Module required 3.6V+
+ * I am using the 5V pin in the UNO to power
+ * it up. So I need 5 more volts for the 
+ * Relay Module.
+ */
+int RELAY_PWR_PIN = 4; 
 
 int incomingByte = 0;
 int commandByte = 0;
@@ -59,14 +69,18 @@ void setup()
    }
    Serial.println("LegaMote Read\n");
 }
-
 void setupRelayPins()
 {
-    // RELAY_PIN_BASE_NUM + 0
-    pinMode(RELAY_PIN_BASE_NUM + 3, OUTPUT);
+    pinMode(RELAY_PWR_PIN, OUTPUT);
+    digitalWrite(RELAY_PWR_PIN, HIGH);
+
+    for(int i = RELAY_PIN_BASE_NUM; 
+    i < RELAY_PINS_MAX_COUNT; i++)
+    {
+        pinMode(i, OUTPUT);
+    }
     
-    pinMode(RELAY_PIN_BASE_NUM + 4, OUTPUT);
-}
+ }
 
 void loop() 
 {
